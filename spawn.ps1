@@ -79,7 +79,7 @@ function Spawn {
 
     $newLines = @()
     $spc = 0
-    $base =($FromNo / 1000) * 1000
+    $base = ([Int]($FromNo / 1000)) * 1000
     $FromNo %= 1000
     
     for ($c = 1; $c -le $Count; $c++) {

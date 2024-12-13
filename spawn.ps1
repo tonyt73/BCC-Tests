@@ -123,21 +123,30 @@ if ($Spawn -le 1000) {
     $unit2Section = FindSection $projectFile 'CppCompile Include="Unit2000.cpp"'
 
     # find the line we need to start adding file references to
-    $baseAt = [Int32](FindLine $projectFile '<BuildConfiguration Include="Base">')
-    $frmrAt = [Int32](FindLine $projectFile '<FormResources Include="Unit1000.dfm"/>')
+    $bcLine = [Int32](FindLine $projectFile '<BuildConfiguration Include="Base">')
+    $frLines = [Int32](FindLine $projectFile '<FormResources Include="Unit1000.dfm"/>')
 
     # get the line before the insertAt position as it should have the number we need to start spawning from
-    $spawnFromNo = [Int](($projectFile[$baseAt-1].Split("`"")[1].Replace("Unit","").Replace(".dfm","")) - 1000)
+    $spawnFromNo = [Int](($projectFile[$bcLine-1].Split("`"")[1].Replace("Unit","").Replace(".dfm","")) - 1000)
 
     $u1ss = Spawn $unit1Section $spawnFromNo $Spawn
     $u1fr = Spawn $unit1FrmRes $spawnFromNo $Spawn
     $u2ss = Spawn $unit2Section ($spawnFromNo+1000) $Spawn
 
     # new add the new lines to the project file
-    $p1 = $frmrAt - 1
-    $p2 = $frmrAt
-    $p3 = $frmrAt + 1
-    $newProjectFile = $projectFile[0..$p1] + $u1ss + $u2ss + $projectFile[$p2] + $u1fr + $projectFile[$p3..$projectFile.Length]
+    $p1 = $frLines - 1
+    $p2 = $frLines
+    $p3 = $bcLine - 1
+    # <ItemGroup>
+    #   <CppCompile>
+    #       ...
+    #   </CppCompile>           <- frLine - 1 = $p1 - add new cpp sections after here
+    #   <FormResources/>        <- frLine     = $p2 - existing form res
+    #   <BuildConfiguration>    <- bcLine - 1 = $p3 - add new form resources before here
+    #       ...
+    #   </BuildConfiguration>
+    #
+    $newProjectFile = $projectFile[0..$p1] + $u1ss + $u2ss + $projectFile[$p2..$p3] + $u1fr + $projectFile[$bcLine..$projectFile.Length]
     $newProjectFile -Join ("`r`n") | Set-Content "bcc-test.cbproj"
 
     #update the project cpp file

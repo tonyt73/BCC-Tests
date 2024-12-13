@@ -7,3 +7,4 @@ for ($i = 1; $i -lt 1000; $i++) {
     $file = "Unit?" + $no + ".*"
     Remove-Item $file -Force
 }
+Remove-Item "*.cpp-*" -Force

@@ -77,13 +77,9 @@
 *.dof
 *.bin
 *.lock
-*.local
+*.cbproj.local
 *.cpp-*
 
-# tommygun plugins and libraries
-*.ipi
-*.cpi
-*.tpi
 Lib/
 VCL/
 Debug/

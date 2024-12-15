@@ -1,5 +1,5 @@
-Copy-Item -Path '.\bcc-test - Copy.cbproj' -Destination '.\bcc-test.cbproj' -Force
-Copy-Item -Path '.\bcc-test - Copy.cpp' -Destination '.\bcc-test.cpp' -Force
+Copy-Item -Path '.\Copy of bcc-test.cbproj' -Destination '.\bcc-test.cbproj' -Force
+Copy-Item -Path '.\Copy of bcc-test.cpp' -Destination '.\bcc-test.cpp' -Force
 
 for ($i = 1; $i -lt 1000; $i++) {
     $no = ("000" + $i)
@@ -8,3 +8,4 @@ for ($i = 1; $i -lt 1000; $i++) {
     Remove-Item $file -Force
 }
 Remove-Item "*.cpp-*" -Force
+Remove-Item "*.csv" -Force

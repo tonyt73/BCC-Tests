@@ -29,11 +29,25 @@ function RunTest {
     }
 
     $bcc32time = Measure-Command { & .\build-bcc32.bat }
+    $b32c = 1
+    if (-not (Test-Path ".\Win32\Release\bcc-test.exe" -PathType Leaf)) {
+        $b32c = -1
+    }
+    
     $bcc64time = Measure-Command { & .\build-bcc64.bat }
+    $b64c = 1
+    if (-not (Test-Path ".\Win64\Release\bcc-test.exe" -PathType Leaf)) {
+        $b64c = -1
+    }
+    
     $bcc64xtime = Measure-Command { & .\build-bcc64x.bat }
+    $b64x = 1
+    if (-not (Test-Path ".\Win64x\Release\bcc-test.exe" -PathType Leaf)) {
+        $b64x = -1
+    }
 
-    "$spawnCount, $($bcc32time.TotalSeconds), $($bcc64time.TotalSeconds), $($bcc64xtime.TotalSeconds)" | Add-Content $file
-    Write-Host "Completed: $testName, $spawnCount`r`n"
+    "$spawnCount, $($bcc32time.TotalSeconds * $b32c), $($bcc64time.TotalSeconds * $b64c), $($bcc64xtime.TotalSeconds * $b64x)" | Add-Content $file
+    Write-Host "Completed: $testName, $spawnCount - bcc32: $b32c, bcc64: $b64c, bcc64x: $b64x`r`n"
 }
 
 
@@ -41,7 +55,7 @@ function RunTest {
 Write-Host 
 .\Restore.ps1
 
-".\Run-Tests.ps1 -TestName `"$testName`" -Loops $Loops -Spawns $Spawns" | Set-Content "Re-RunTests.ps1"
+".\Run-Tests.ps1 -TestName `"$testName`" -Loops $Loops -Spawns $Spawns" | Set-Content "ReRun-Tests.ps1"
 
 # time the original project
 RunTest $TestName 0

@@ -41,6 +41,7 @@ function RunTest {
 Write-Host 
 .\Restore.ps1
 
+".\Run-Tests.ps1 -TestName `"$testName`" -Loops $Loops -Spawns $Spawns" | Set-Content "Re-RunTests.ps1"
 
 # time the original project
 RunTest $TestName 0

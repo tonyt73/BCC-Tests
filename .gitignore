@@ -163,3 +163,4 @@ backup/*
 images/*
 *.bak
 *.tdl
+ReRun-Tests.ps1

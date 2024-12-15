@@ -28,6 +28,8 @@ function RunTest {
         Compress-Archive @zip -Force
     }
 
+    # measure the time for each build
+    # swap the build time to negative if the executable is not present. ie. build failed
     $bcc32time = Measure-Command { & .\build-bcc32.bat }
     $b32c = 1
     if (-not (Test-Path ".\Win32\Release\bcc-test.exe" -PathType Leaf)) {
@@ -55,6 +57,7 @@ function RunTest {
 Write-Host 
 .\Restore.ps1
 
+# create a script that re-runs the test with the same input parameters
 ".\Run-Tests.ps1 -TestName `"$testName`" -Loops $Loops -Spawns $Spawns" | Set-Content "ReRun-Tests.ps1"
 
 # time the original project

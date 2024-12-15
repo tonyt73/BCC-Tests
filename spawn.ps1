@@ -60,7 +60,7 @@ function CopyFile {
         if ($file -ne "") {
             # make a copy of the original file
             $nf = $file.Replace("000", $newNo)
-            Write-Host "Copying file: '$file' as '$nf'"
+            #Write-Host "Copying file: '$file' as '$nf'"
             Copy-Item -Path $file -Destination $nf
             # load the file and change the class references
             (Get-Content $nf).Replace("000", "$no") | Set-Content $nf
@@ -161,7 +161,7 @@ if ($Spawn -le 1000) {
     $nl = $useformLine+1
     $newCppFile = $cppFile[0..$useformLine] + $lines + $cppFile[$nl..$cppFile.Length]
     $newCppFile | Set-Content ".\bcc-test.cpp"
-    Write-Host
+    #Write-Host
 } else {
     # spawning too much in one go
     Write-Error "Spawn limit is 1000"
